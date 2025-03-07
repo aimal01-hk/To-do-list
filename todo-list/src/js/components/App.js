@@ -31,64 +31,68 @@ const app = {
         }
     },
     methods: {
-        login() {
-            if (this.username.trim() && this.email.trim() && this.password.trim()) {
-                localStorage.setItem('currentUser', this.email); 
-                localStorage.setItem('currentUsername', this.username); 
-                this.loadTasks(); 
-                this.isLoggedIn = true; 
-            }
-        },
-        logout() {
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('currentUsername');
-            this.username = '';
-            this.email = '';
-            this.password = '';
-            this.isLoggedIn = false; 
-            this.tasks = []; 
-        },
-        loadTasks() {
-            const storedTasks = localStorage.getItem(`tasks_${this.email}`);
-            this.tasks = storedTasks ? JSON.parse(storedTasks) : [];
-        },
-        addTask() {
-            if (this.newTask.trim()) {
-                this.tasks.push({
-                    id: Date.now(),
-                    text: this.newTask,
-                    date: this.selectedDate,
-                    completed: false,
-                    inProgress: false
-                });
-                this.newTask = '';
-                this.saveTasks();
-            }
-        },
-        toggleStatus(task) {
-            if (!task.completed && !task.inProgress) {
-                task.inProgress = true;
-            } else if (task.inProgress) {
-                task.inProgress = false;
-                task.completed = true;
-            } else {
-                task.completed = false;
-            }
-            this.saveTasks();
-        },
-        deleteTask(taskId) {
-            this.tasks = this.tasks.filter(task => task.id !== taskId); 
-            this.saveTasks();
-        },
-        saveTasks() {
-            localStorage.setItem(`tasks_${this.email}`, JSON.stringify(this.tasks)); 
+    login() {
+        if (this.username.trim() && this.email.trim() && this.password.trim()) {
+            localStorage.setItem('currentUser', this.email); 
+            localStorage.setItem('currentUsername', this.username); 
+            this.loadTasks(); 
+            this.isLoggedIn = true; 
         }
     },
-    watch: {
-        selectedDate() {
-            this.loadTasks();  
+    logout() {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('currentUsername');
+        this.username = '';
+        this.email = '';
+        this.password = '';
+        this.isLoggedIn = false; 
+        this.tasks = []; 
+    },
+    loadTasks() {
+        const storedTasks = localStorage.getItem(`tasks_${this.email}`);
+        this.tasks = storedTasks ? JSON.parse(storedTasks) : [];
+    },
+    addTask() {
+        if (this.newTask.trim()) {
+            this.tasks.push({
+                id: Date.now(),
+                text: this.newTask,
+                date: this.selectedDate,
+                completed: false,
+                inProgress: false
+            });
+            this.newTask = '';
+            this.saveTasks();
         }
     },
+    openDatePicker() {
+        this.$refs.dateInput.showPicker(); 
+    },
+    toggleStatus(task) {
+        if (!task.completed && !task.inProgress) {
+            task.inProgress = true;
+        } else if (task.inProgress) {
+            task.inProgress = false;
+            task.completed = true;
+        } else {
+            task.completed = false;
+        }
+        this.saveTasks();
+    },
+    deleteTask(taskId) {
+        this.tasks = this.tasks.filter(task => task.id !== taskId); 
+        this.saveTasks();
+    },
+    saveTasks() {
+        localStorage.setItem(`tasks_${this.email}`, JSON.stringify(this.tasks)); 
+    }
+},
+watch: {
+    selectedDate() {
+        this.loadTasks();  
+    }
+},
+
     template: `
         <div class="todo-app p-6 max-w-2xl mx-auto">
             <div v-if="!isLoggedIn" class="bg-white p-6 rounded-lg shadow-lg">
@@ -96,7 +100,7 @@ const app = {
                 <!-- New Username Field -->
                 <input type="text" v-model="username" placeholder="Enter your username" class="w-full p-2 border rounded mb-3">
                 <input type="email" v-model="email" placeholder="Enter your email" class="w-full p-2 border rounded mb-3">
-                <input type="password" v-model="password" placeholder="Enter password" class="w-full p-2 border rounded mb-3">
+                <input type="password" v-model="password" placeholder="Enter password" class="w-full p-2 border rounded mb-3"  @keyup.enter="login">
                 <button @click="login" class="w-full bg-blue-500 text-white p-2 rounded">Login</button>
             </div>
 
@@ -107,7 +111,7 @@ const app = {
                 </div>
 
                 <div class="mb-6 flex items-center space-x-2 w-full">
-                    <input type="date" v-model="selectedDate" class="px-4 py-2 border rounded-lg">
+                    <input type="date" v-model="selectedDate" class="px-4 py-2 border rounded-lg" @focus="openDatePicker" ref="dateInput">
                     <input type="text" v-model="newTask" @keyup.enter="addTask" placeholder="Add new task..." class="flex-grow px-4 py-2 border rounded-lg truncate">
                     <button @click="addTask" class="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg shrink-0 w-32">Add Task</button>
                 </div>

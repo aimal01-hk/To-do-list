@@ -22,3 +22,43 @@
 .item-text {
     line-break: anywhere;
 }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
+.todo-app {
+    background: rgba(185, 27, 27, 0.014);
+    border-radius: 1rem;
+    box-shadow: 0 45px 50px -12px rgba(37, 36, 36, 0.651);
+    padding: 2rem;
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
+.item-text {
+    line-break: anywhere;
+}
+
+/* ✅ Navbar Styling */
+nav {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+nav a {
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+}
+
+nav a:hover {
+    color: yellow;
+}
