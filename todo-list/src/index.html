@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+<html lang="en" class="h-full"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Todo List</title> 
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 min-h-screen">
+    <h2 class="text-white text-shadow font-bold text-center text-5xl mb-7 mt-14"
+    style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); animation: pulse 2s infinite;"
+    >To-Do-List<img src="images.jpg" 
+    style="width: 70px; height: 70px;" class="inline-block ml-6"></h2>
+    
+    <div id="app">
+        <div class="container mx-auto px-4 py-8">
+            <div class="todo-app bg-white rounded-xl shadow-2xl p-8 max-w-2xl mx-auto">
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import App from './js/components/App.js';
+        const { createApp } = Vue;
+        createApp(App).mount('#app');
+    </script>
+    
+</body>
+</html>
